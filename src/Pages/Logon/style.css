@@ -8,6 +8,23 @@
     background-size: cover
 }
 
+.LogonContainer .UseType {
+    width: 100%;
+    font-weight: bold;
+    font-size: 18px;
+    display: flex;
+    justify-content: flex-end;
+    color: gray;
+}
+
+.LogonContainer .UseType label {
+    margin: 5px;
+}
+
+.LogonContainer .UseType .Selected{
+    color: black;
+    text-decoration: underline black;
+}
 .LogonContainer .LogonForm {
     display: flex;
     justify-content: center;
@@ -29,15 +46,18 @@
     border: none;
     color: black;
 }
-.LogonContainer .LogonForm .LogonInput:hover{
+
+.LogonContainer .LogonForm .LogonInput:hover {
     background: rgba(253, 252, 252, 0.747);
 }
+
 .LogonContainer .LogonForm .LogonInput:focus {
     background: rgba(253, 252, 252, 0.747);
 }
 
 .LogonContainer .LogonForm .LogonBtn {
     height: 50px;
+    width: 100%;
     margin-bottom: 5%;
     background: rgba(255, 255, 255, 0.445);
     outline: none;
@@ -51,7 +71,7 @@
     background: rgba(253, 252, 252, 0.747);
 }
 
-.Logo{
+.Logo {
     width: 160px;
     height: 150px;
     align-self: center;
