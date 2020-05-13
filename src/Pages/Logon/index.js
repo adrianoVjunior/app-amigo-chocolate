@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { useHistory } from 'react-router-dom'
 import api from '../../Services/api'
 import { useState } from 'react'
+import './style.css'
+import logo from '../../Images/LogoAmigoDoce2.png'
 
 export default function Logon() {
     const [login, setLogin] = useState('')
@@ -31,21 +33,33 @@ export default function Logon() {
     }
 
     return (
-        <div>
-            <form onSubmit={handleLogon}>
-                <h1>Faça Seu login</h1>
+        <div className="LogonContainer">
+            <form
+                onSubmit={handleLogon}
+                className="LogonForm"
+            >
+            <img className="Logo" src={logo} height="40%" width="100%"/>
+
+                <image>{}</image>
+                <label>Usuário</label>
                 <input
-                    placeholder="Login"
+                    className="LogonInput"
                     value={login}
                     onChange={e => setLogin(e.target.value)}
                 />
+                <label>Senha</label>
                 <input
+                    className="LogonInput"
                     type="password"
-                    placeholder="Senha"
                     value={senha}
                     onChange={e => setSenha(e.target.value)}
                 />
-                <button type="submit">Entrar</button>
+                <button
+                    type="submit"
+                    className="LogonBtn"
+                >
+                    Entrar
+                </button>
             </form>
         </div>
     )

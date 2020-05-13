@@ -1,0 +1,58 @@
+.LogonContainer {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url('../../Images/backgroundLogon.jpg') no-repeat left top fixed;
+    background-size: cover
+}
+
+.LogonContainer .LogonForm {
+    display: flex;
+    justify-content: center;
+    padding: 2%;
+    width: 60vw;
+    max-width: 400px;
+    height: auto;
+    flex-direction: column;
+    border-radius: 5px;
+    background: rgb(238, 174, 202);
+    background: linear-gradient(328deg, rgba(238, 174, 202, 0.9) 0%, rgba(148, 187, 233, 0.9) 100%);
+}
+
+.LogonContainer .LogonForm .LogonInput {
+    height: 50px;
+    margin-bottom: 5%;
+    background-color: rgba(255, 255, 255, 0.445);
+    outline: none;
+    border: none;
+    color: black;
+}
+.LogonContainer .LogonForm .LogonInput:hover{
+    background: rgba(253, 252, 252, 0.747);
+}
+.LogonContainer .LogonForm .LogonInput:focus {
+    background: rgba(253, 252, 252, 0.747);
+}
+
+.LogonContainer .LogonForm .LogonBtn {
+    height: 50px;
+    margin-bottom: 5%;
+    background: rgba(255, 255, 255, 0.445);
+    outline: none;
+    border: 0.5px solid rgba(129, 129, 129, 0.705);
+    border: none;
+    border-radius: 5px;
+    color: black;
+}
+
+.LogonContainer .LogonForm .LogonBtn:hover {
+    background: rgba(253, 252, 252, 0.747);
+}
+
+.Logo{
+    width: 160px;
+    height: 150px;
+    align-self: center;
+}
