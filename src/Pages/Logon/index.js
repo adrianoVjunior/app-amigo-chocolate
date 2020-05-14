@@ -5,23 +5,25 @@ import { useState } from 'react'
 import './style.css'
 import logo from '../../Images/LogoAmigoDoce2.png'
 import Loader from '../../Components/Loader'
-import Toast from '../../Components/Toast'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Logon() {
     const [usuario, setUsuario] = useState('')
     const [senha, setSenha] = useState('')
-
     const [nome, setNome] = useState('')
     const [email, setEmail] = useState('')
-
     const [loading, setLoading] = useState(false)
-    const [toast, setToast] = useState({ message: '', type: '' })
     const [cadastrar, setCadastrar] = useState(false)
     const [entrar, setEntrar] = useState(true)
-
-
     const history = useHistory()
 
+    async function resetData() {
+        setUsuario('')
+        setSenha('')
+        setNome('')
+        setEmail('')
+    }
     async function handleLogon(e) {
         e.preventDefault();
 
@@ -32,10 +34,10 @@ export default function Logon() {
         try {
             setLoading(true)
             const response = await api.post(`/login`, data)
+            console.log(response)
             if (response.data.auth === false) {
                 setLoading(false)
-                setToast({ message: 'Usuário e/ou senha incorretos', type: 'error' })
-                alert("Usuário e/ou senha incorretos")
+                toast.error("Usuário e/ou senha incorretos")
                 return
             }
             localStorage.setItem('pUsuario', data.usuario)
@@ -43,7 +45,6 @@ export default function Logon() {
             history.push('/principal')
         }
         catch{
-            setToast({ message: 'Erro ao tentar logar no sistema', type: 'error' })
             setLoading(false)
         }
     }
@@ -63,11 +64,14 @@ export default function Logon() {
             console.log(response.data)
             localStorage.setItem('pUsuario', data.usuario)
             setLoading(false)
-            history.push('/principal')
+            history.push('/')
         }
-        catch{
-            setToast({ message: 'Erro ao tentar logar no sistema', type: 'error' })
+        catch (err) {
+            let message = err.response.data.message
+            console.log(message)
+            toast.error(message === undefined ? "Erro ao realizar cadastro" : message)
             setLoading(false)
+            history.push('/')
         }
     }
 
@@ -84,13 +88,13 @@ export default function Logon() {
                 <div className="UseType">
                     <label
                         className={entrar === true ? 'Selected' : ''}
-                        onClick={() => (setEntrar(true), setCadastrar(false))}
+                        onClick={() => (setEntrar(true), setCadastrar(false), resetData())}
                     >
                         Entrar
                     </label>
                     <label
                         className={cadastrar === true ? 'Selected' : ''}
-                        onClick={() => (setEntrar(false), setCadastrar(true))}
+                        onClick={() => (setEntrar(false), setCadastrar(true), resetData())}
                     >
                         Cadastrar
                     </label>
@@ -165,14 +169,7 @@ export default function Logon() {
                 }
 
             </div>
-            {toast.message !== '' &&
-                <Toast
-                    message={toast.message}
-                    type={toast.type}
-                    done={e => console.log(e)}
-                />
-            }
+            <ToastContainer />
         </div>
     )
-
 }
