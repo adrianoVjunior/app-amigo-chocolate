@@ -1,8 +1,10 @@
 import React/* , { useState } */ from 'react'
 import { useHistory } from 'react-router-dom'
+import BannerGrupo from '../../Components/BannerGrupo'
+import Header from '../../Components/Header'
+import './style.css'
 
 export default function Principal() {
-    const pLogin = localStorage.getItem('plogin')
     const history = useHistory()
 
     function handleLogout() {
@@ -11,9 +13,14 @@ export default function Principal() {
     }
 
     return (
-        <div>
-            <h1>Bem vindo{pLogin}!</h1>
-            <button onClick={handleLogout}> Fazer Logout </button>
+        <div className="PrincipalContainer">
+            <Header
+                logout={() => handleLogout()}
+            />
+            <div className="Content">
+                <BannerGrupo />
+            </div>
+
         </div>
     )
 }
