@@ -8,13 +8,11 @@ import Loader from '../../Components/Loader'
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 
-export default function BannerGrupo() {
+export default function Participantes() {
 
     const [grupos, setGrupos] = useState([])
     const [loading, setLoading] = useState(false)
-    const [showCreateModal, setCreateModal] = useState(false)
-    const [detailModal, setDetailModal] = useState({ visible: false, content: '' })
-
+    const [showModal, setModal] = useState(false)
 
     const [nomeGrupo, setNomeGrupo] = useState('')
     const [valorMin, setValorMin] = useState('')
@@ -81,25 +79,6 @@ export default function BannerGrupo() {
         }
     }
 
-    async function generateDetailModal(grupo) {
-        let content = await DetailModalContent(grupo)
-        setDetailModal({ visible: true, content: content })
-    }
-
-    function DetailModalContent(grupo) {
-        {
-            return (
-                <div style={style.BannerContainer}>
-                    {grupo.integrantes.map(i => {
-                        return (
-                            <label>{i.nome}</label>
-                        )
-                    })}
-                </div>
-            )
-        }
-    }
-
     async function handleCadastroGrupo() {
 
         const data = {
@@ -114,6 +93,7 @@ export default function BannerGrupo() {
         try {
             setLoading(true)
             const response = await api.post(`/grupo`, data)
+            console.log(response.data)
             setLoading(false)
             setGrupos(response.data)
         }
@@ -123,6 +103,8 @@ export default function BannerGrupo() {
             setLoading(false)
             setGrupos([])
         }
+
+
     }
 
     useEffect(() => {
@@ -137,7 +119,7 @@ export default function BannerGrupo() {
             }
             catch (err) {
                 let message = err.response.data.message
-                toast.error(message === undefined ? "Erro ao buscar Grupos" : message)
+                toast.error(message === undefined ? "Erro ao buscar Participantes" : message)
                 setLoading(false)
                 setGrupos([])
             }
@@ -151,7 +133,7 @@ export default function BannerGrupo() {
                 return (
                     <div
                         style={style.BannerContainer}
-                        onClick={() => generateDetailModal(g)}
+                        onClick={() => console.log("clicou")}
                         key={g._id}
                     >
                         <div style={style.Header}>
@@ -166,62 +148,11 @@ export default function BannerGrupo() {
             })}
             <div
                 style={style.BannerContainer}
-                onClick={() => setCreateModal(true)}
+                onClick={() => setModal(true)}
             >
                 <span style={{ fontSize: '20px' }}>Criar Grupo</span>
                 <FiPlus size={50} />
             </div>
-            <ToastContainer />
-            <Loader loading={loading} />
-            <Modal
-                open={showCreateModal}
-                onClose={() => setCreateModal(false)}
-                center
-                closeOnEsc={false}
-                closeOnOverlayClick={false}
-            >
-                <form
-                    style={style.formGrupo}
-                    onSubmit={handleCadastroGrupo}
-                >
-                    <label>Nome Grupo</label>
-                    <input
-                        value={nomeGrupo}
-                        onChange={e => setNomeGrupo(e.target.value)}
-                    />
-                    <label>Valor Mínimo</label>
-                    <input
-                        type="number"
-                        value={valorMin}
-                        onChange={e => setValorMin(e.target.value)}
-                    />
-                    <label>Valor Máximo</label>
-                    <input
-                        type="number"
-                        value={valorMax}
-                        onChange={e => setValorMax(e.target.value)}
-                    />
-                    <button
-                        type="submit"
-                        style={style.btnFormGrupo}
-                    >
-                        {loading === false ?
-                            'Cadastrar' :
-                            <Loader loading={loading} />
-                        }
-                    </button>
-                </form>
-            </Modal>
-            <Modal
-                open={detailModal.visible}
-                onClose={() => setDetailModal({ visible: false, content: '' })}
-                center
-                closeOnEsc={false}
-                closeOnOverlayClick={false}
-            >
-                {detailModal.content}
-            </Modal>
-
         </div>
     )
 }

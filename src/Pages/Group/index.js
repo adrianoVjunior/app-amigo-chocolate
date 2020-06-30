@@ -4,17 +4,16 @@ import { useEffect } from 'react';
 import api from '../../Services/api'
 import { ToastContainer, toast } from 'react-toastify';
 import Loader from '../../Components/Loader'
+import Participantes from '../../Components/Participantes'
 
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 
-export default function BannerGrupo() {
+export default function Group() {
 
     const [grupos, setGrupos] = useState([])
     const [loading, setLoading] = useState(false)
-    const [showCreateModal, setCreateModal] = useState(false)
-    const [detailModal, setDetailModal] = useState({ visible: false, content: '' })
-
+    const [showModal, setModal] = useState(false)
 
     const [nomeGrupo, setNomeGrupo] = useState('')
     const [valorMin, setValorMin] = useState('')
@@ -81,25 +80,6 @@ export default function BannerGrupo() {
         }
     }
 
-    async function generateDetailModal(grupo) {
-        let content = await DetailModalContent(grupo)
-        setDetailModal({ visible: true, content: content })
-    }
-
-    function DetailModalContent(grupo) {
-        {
-            return (
-                <div style={style.BannerContainer}>
-                    {grupo.integrantes.map(i => {
-                        return (
-                            <label>{i.nome}</label>
-                        )
-                    })}
-                </div>
-            )
-        }
-    }
-
     async function handleCadastroGrupo() {
 
         const data = {
@@ -114,6 +94,7 @@ export default function BannerGrupo() {
         try {
             setLoading(true)
             const response = await api.post(`/grupo`, data)
+            console.log(response.data)
             setLoading(false)
             setGrupos(response.data)
         }
@@ -123,6 +104,8 @@ export default function BannerGrupo() {
             setLoading(false)
             setGrupos([])
         }
+
+
     }
 
     useEffect(() => {
@@ -146,36 +129,16 @@ export default function BannerGrupo() {
     }, [])
 
     return (
-        <div style={style.Banners}>
-            {grupos.length !== undefined && grupos.length > 0 && grupos.map(g => {
-                return (
-                    <div
-                        style={style.BannerContainer}
-                        onClick={() => generateDetailModal(g)}
-                        key={g._id}
-                    >
-                        <div style={style.Header}>
-                            <span>{g.nome}</span>
-                        </div>
-                        <div style={style.Content}>
-                            <span>{`${g.integrantes.length} Participantes`}</span>
-                            <span style={style.Status}>{g.statusGrupo === "A" ? "Aguardando Sorteio" : g.statusGrupo === "S" ? "Sorteado" : "Finalizado"}</span>
-                        </div>
-                    </div>
-                )
-            })}
-            <div
-                style={style.BannerContainer}
-                onClick={() => setCreateModal(true)}
-            >
-                <span style={{ fontSize: '20px' }}>Criar Grupo</span>
-                <FiPlus size={50} />
+        <>
+            <div style={style.Banners}>
+                <Participantes />
+                <div>Informações</div>
             </div>
             <ToastContainer />
             <Loader loading={loading} />
             <Modal
-                open={showCreateModal}
-                onClose={() => setCreateModal(false)}
+                open={showModal}
+                onClose={() => setModal(false)}
                 center
                 closeOnEsc={false}
                 closeOnOverlayClick={false}
@@ -212,16 +175,6 @@ export default function BannerGrupo() {
                     </button>
                 </form>
             </Modal>
-            <Modal
-                open={detailModal.visible}
-                onClose={() => setDetailModal({ visible: false, content: '' })}
-                center
-                closeOnEsc={false}
-                closeOnOverlayClick={false}
-            >
-                {detailModal.content}
-            </Modal>
-
-        </div>
+        </>
     )
 }
